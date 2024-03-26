@@ -5,10 +5,21 @@ pool:
   vmImage: 'ubuntu-latest'  
 
 steps:  
-- script: |  
-       
-          $apiUrl = "https://apilist.fun/api/food-api"    
+#- checkout: self  
+
+- task: PowerShell@2  
+  displayName: 'Load API Data'  
+  inputs:  
+    targetType: 'inline'  
+    script: |  
+      try {  
+          $apiUrl = "https://dummy.restapiexample.com/api/v1/employees" 
+          Write-Output "API URL: $apiUrl"  
           $apiResponse = Invoke-RestMethod -Uri $apiUrl -Method Get  
-          echo $($apiResponse.StatusCode)"   
-          echo $apiResponse  
-  displayName: 'sample'
+          Write-Output "Status Code: $($apiResponse.StatusCode)" 
+        
+          Write-Output "API data received:"  
+          Write-Output $apiResponse  
+      } catch {  
+          Write-Error "Failed to retrieve API data. Error: $_"  
+      }
