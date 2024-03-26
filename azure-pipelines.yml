@@ -1,20 +1,27 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+trigger:  # Defines a trigger for the pipeline.
+  branches:  # Specifies the branches that trigger the pipeline.
+    include:  # Specifies the branches to include for triggering.
+      - main  # Includes the 'main' branch for triggering the pipeline.
 
-trigger:
-- main
+pool:  # Specifies the agent pool for the pipeline.
+  vmImage: 'ubuntu-latest'  # Specifies the virtual machine image to use for the pipeline.
 
-pool:
-  vmImage: ubuntu-latest
+steps:  # Defines the steps to execute in the pipeline.
+- checkout: self  # Checks out the source code repository where the pipeline configuration resides.
 
-steps:
-- script: echo Hello, world!
-          echo Varuna!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: PowerShell@2  # Defines a PowerShell task in the pipeline.
+  displayName: 'Load API Data'  # Specifies a display name for the task.
+  inputs:  # Specifies the inputs for the task.
+    targetType: 'inline'  # Specifies that the script will be provided inline.
+    script: |  # Begins a multiline PowerShell script block.
+      try {  # Starts a try-catch block for error handling.
+          $apiUrl = "https://apilist.fun/api/food-api"  # Defines the URL of the API.
+          Write-Output "API URL: $apiUrl"  # Writes the API URL to the output.
+          $apiResponse = Invoke-RestMethod -Uri $apiUrl -Method Get  # Sends a GET request to the API and stores the response.
+          Write-Output "Status Code: $($apiResponse.StatusCode)"  # Writes the status code of the API response to the output.
+         #$apiResponse | Out-File -FilePath data.json -Force  # Saves the API response to a file named 'data.json'.
+          Write-Output "API data received:"  # Writes a message indicating that API data has been received.
+          Write-Output $apiResponse  # Writes the API response to the output.
+      } catch {  # Catches any errors that occur within the try block.
+          Write-Error "Failed to retrieve API data. Error: $_"  # Writes an error message if API data retrieval fails.
+      }
