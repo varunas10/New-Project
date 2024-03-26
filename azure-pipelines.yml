@@ -7,7 +7,7 @@ pool:
 steps:  
 - script: |  
       try {  
-          $apiUrl = "https://dummy.restapiexample.com/api/v1/employees"  .
+          $apiUrl = "https://apilist.fun/api/food-api"  .
           Write-Output "API URL: $apiUrl"  
           $apiResponse = Invoke-RestMethod -Uri $apiUrl -Method Get  
           Write-Output "Status Code: $($apiResponse.StatusCode)"  
