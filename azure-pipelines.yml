@@ -9,7 +9,6 @@ steps:
        
           $apiUrl = "https://apilist.fun/api/food-api"    
           $apiResponse = Invoke-RestMethod -Uri $apiUrl -Method Get  
-          echo $($apiResponse.StatusCode)"  
-          Write-Output "API data received:" 
-          Write-Output $apiResponse  
-      
+          echo $($apiResponse.StatusCode)"   
+          echo $apiResponse  
+  displayName: 'sample'
