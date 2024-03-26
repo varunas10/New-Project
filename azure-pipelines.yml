@@ -6,14 +6,10 @@ pool:
 
 steps:  
 - script: |  
-      try {  
-          $apiUrl = "https://apilist.fun/api/food-api"  .
-          Write-Output "API URL: $apiUrl"  
+       
+          $apiUrl = "https://apilist.fun/api/food-api"    
           $apiResponse = Invoke-RestMethod -Uri $apiUrl -Method Get  
-          Write-Output "Status Code: $($apiResponse.StatusCode)"  
+          echo $($apiResponse.StatusCode)"  
           Write-Output "API data received:" 
           Write-Output $apiResponse  
-      } 
-      catch {  
-          Write-Error "Failed to retrieve API data. Error: $_"  
-      }
+      
